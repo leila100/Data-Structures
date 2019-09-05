@@ -31,7 +31,11 @@ class BinarySearchTree:
             return self.left.contains(target)
 
     def get_max(self):
-        pass
+        max_value = self.value
+        if self.right == None:
+            return max_value
+        else:
+            return max(max_value, self.right.get_max())
 
     def for_each(self, cb):
         pass
