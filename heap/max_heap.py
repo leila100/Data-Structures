@@ -3,29 +3,56 @@ class Heap:
         self.storage = []
 
     def insert(self, value):
+        # Insert at end of list
         self.storage.append(value)
         idx = len(self.storage)-1
-        while idx >= 1:
-            parentIdx = (idx-1)//2
-            parent = self.storage[parentIdx]
-            if value <= parent:
-                break
-            self.storage[parentIdx] = value
-            self.storage[idx] = parent
-            idx = parentIdx
+        # place the value where it belongs
+        self._bubble_up(idx)
         return self.storage
 
     def delete(self):
-        pass
+        # remove root
+        return_value = self.storage[0]
+        # put last element of list as the root
+        element = self.storage.pop()
+        if len(self.storage) == 0:
+            return return_value
+        # move root where it belongs
+        self.storage[0] = element
+        self._sift_down(0)
+        return return_value
 
     def get_max(self):
-        pass
+        return self.storage[0]
 
     def get_size(self):
-        pass
+        return len(self.storage)
 
     def _bubble_up(self, index):
-        pass
+        value = self.storage[index]
+        while index >= 1:
+            parentIdx = (index-1)//2
+            parent = self.storage[parentIdx]
+            if value <= parent:
+                return
+            self.storage[parentIdx] = value
+            self.storage[index] = parent
+            index = (index-1)//2
 
     def _sift_down(self, index):
-        pass
+        element = self.storage[index]
+        while True:
+            swap = None
+            leftIdx = (2*index)+1
+            if leftIdx <= len(self.storage)-1 and self.storage[leftIdx] > element:
+                swap = leftIdx
+            rightIdx = (2*index)+2
+            if rightIdx <= len(self.storage)-1 and self.storage[rightIdx] > self.storage[leftIdx]:
+                swap = rightIdx
+            if swap != None:
+                self.storage[index] = self.storage[swap]
+                self.storage[swap] = element
+            if swap != None:
+                index = swap
+            else:
+                break
